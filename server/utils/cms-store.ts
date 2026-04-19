@@ -1,4 +1,4 @@
-import { access, mkdir, readFile, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { randomUUID } from 'node:crypto'
 import { internalPages } from '../../app/data/internal-pages'
@@ -184,50 +184,51 @@ const htmlToParagraphs = (value?: string) =>
     .map(item => item.trim())
     .filter(Boolean)
 
-const ensureCmsFile = async () => {
-  try {
-    await access(cmsFilePath)
-  }
-  catch {
-    await mkdir(dirname(cmsFilePath), { recursive: true })
-    await writeFile(cmsFilePath, JSON.stringify(defaultCmsStore, null, 2), 'utf8')
-  }
-}
+const createNormalizedStore = (parsed?: Partial<CmsStore>): CmsStore => ({
+  blog: Array.isArray(parsed?.blog)
+    ? parsed.blog.map(item => ({
+        ...item,
+        bodyHtml: item.bodyHtml ?? item.body.map(paragraph => `<p>${paragraph}</p>`).join('')
+      }))
+    : defaultCmsStore.blog,
+  news: Array.isArray(parsed?.news)
+    ? parsed.news.map(item => ({
+        ...item,
+        textHtml: item.textHtml ?? `<p>${item.text}</p>`
+      }))
+    : defaultCmsStore.news,
+  pages: Array.isArray(parsed?.pages)
+    ? parsed.pages.map(item => ({
+        ...item,
+        bodyHtml: item.bodyHtml ?? item.body.map(paragraph => `<p>${paragraph}</p>`).join('')
+      }))
+    : defaultCmsStore.pages
+})
 
 export const readCmsStore = async () => {
-  await ensureCmsFile()
-  const file = await readFile(cmsFilePath, 'utf8')
-  const parsed = JSON.parse(file) as Partial<CmsStore>
-  const normalized: CmsStore = {
-    blog: Array.isArray(parsed.blog)
-      ? parsed.blog.map(item => ({
-          ...item,
-          bodyHtml: item.bodyHtml ?? item.body.map(paragraph => `<p>${paragraph}</p>`).join('')
-        }))
-      : defaultCmsStore.blog,
-    news: Array.isArray(parsed.news)
-      ? parsed.news.map(item => ({
-          ...item,
-          textHtml: item.textHtml ?? `<p>${item.text}</p>`
-        }))
-      : defaultCmsStore.news,
-    pages: Array.isArray(parsed.pages)
-      ? parsed.pages.map(item => ({
-          ...item,
-          bodyHtml: item.bodyHtml ?? item.body.map(paragraph => `<p>${paragraph}</p>`).join('')
-        }))
-      : defaultCmsStore.pages
-  }
+  try {
+    const file = await readFile(cmsFilePath, 'utf8')
+    const parsed = JSON.parse(file) as Partial<CmsStore>
+    const normalized = createNormalizedStore(parsed)
 
-  if (
-    !Array.isArray(parsed.blog)
-    || !Array.isArray(parsed.news)
-    || !Array.isArray(parsed.pages)
-  ) {
-    await writeCmsStore(normalized)
-  }
+    if (
+      !Array.isArray(parsed.blog)
+      || !Array.isArray(parsed.news)
+      || !Array.isArray(parsed.pages)
+    ) {
+      try {
+        await writeCmsStore(normalized)
+      }
+      catch {
+        // Read-only environments like Vercel should still serve bundled defaults.
+      }
+    }
 
-  return normalized
+    return normalized
+  }
+  catch {
+    return createNormalizedStore()
+  }
 }
 
 export const writeCmsStore = async (store: CmsStore) => {

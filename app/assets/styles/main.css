@@ -404,6 +404,220 @@
   }
 }
 
+@media (max-width: 900px) {
+  .topbar {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem;
+    padding-right: 4.4rem;
+  }
+
+  .topbar .burger-button {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    display: inline-flex;
+    justify-self: auto;
+    grid-column: auto;
+  }
+
+  .section-sidebar,
+  .scroll-rail {
+    display: none;
+  }
+
+  .landing-section,
+  .map-section {
+    padding-right: 1rem;
+    padding-bottom: 4rem;
+  }
+
+  .hero-cta-card {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .landing-section__meta--catalog {
+    justify-items: center;
+    text-align: center;
+  }
+
+  .landing-section__meta--catalog .landing-section__meta-group {
+    justify-content: center;
+  }
+
+  .landing-section__meta--catalog .landing-section__cta {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .map-section__layout {
+    justify-items: center;
+  }
+
+  .map-section__card,
+  .map-section__embed {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .topbar {
+    padding-right: 4rem;
+  }
+
+  .topbar .burger-button {
+    right: 0.85rem;
+  }
+
+  .landing-section,
+  .map-section {
+    padding-right: 0.9rem;
+    padding-bottom: 3rem;
+  }
+
+  .hero-cta-card,
+  .map-section__card,
+  .map-section__embed {
+    width: min(100%, 100%);
+  }
+}
+
+@media (max-width: 900px) {
+  .topbar {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.75rem;
+    padding-right: 1rem;
+  }
+
+  .brand-block {
+    min-width: 0;
+  }
+
+  .topbar .burger-button {
+    display: inline-flex;
+    grid-column: 2;
+    justify-self: end;
+    align-self: center;
+  }
+
+  .section-sidebar {
+    left: 50%;
+    right: auto;
+    bottom: 1rem;
+    top: auto;
+    width: max-content;
+    max-width: calc(100vw - 6.5rem);
+    padding: 0.45rem 0.55rem;
+    transform: translateX(-50%);
+  }
+
+  .section-sidebar__list {
+    justify-content: center;
+  }
+
+  .scroll-rail {
+    right: 1rem;
+    bottom: 1rem;
+    top: auto;
+    transform: none;
+  }
+
+  .scroll-rail__track {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.45rem 0.55rem;
+    border-radius: 999px;
+  }
+
+  .scroll-rail__thumb {
+    display: none;
+  }
+
+  .scroll-rail__dot {
+    width: 0.48rem;
+    height: 0.48rem;
+    border-radius: 999px;
+    transform: none;
+  }
+
+  .scroll-rail__dot--active,
+  .scroll-rail__dot:hover {
+    transform: scale(1.12);
+  }
+
+  .internal-overlay__header {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    padding: 1rem 1rem 0.9rem;
+  }
+
+  .internal-overlay__actions {
+    width: 100%;
+    justify-content: flex-end;
+    gap: 0.7rem;
+  }
+
+  .internal-overlay__actions .burger-button {
+    display: inline-flex;
+    order: 1;
+  }
+
+  .internal-overlay__close {
+    order: 2;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .topbar {
+    padding-left: 0.85rem;
+    padding-right: 0.85rem;
+  }
+
+  .section-sidebar {
+    bottom: 0.8rem;
+    max-width: calc(100vw - 5.9rem);
+    padding: 0.38rem 0.45rem;
+  }
+
+  .section-dot {
+    min-width: 2rem;
+    padding: 0.42rem;
+  }
+
+  .section-dot__index {
+    font-size: 0.66rem;
+  }
+
+  .scroll-rail {
+    right: 0.8rem;
+    bottom: 0.85rem;
+  }
+
+  .scroll-rail__track {
+    gap: 0.35rem;
+    padding: 0.38rem 0.48rem;
+  }
+
+  .scroll-rail__dot {
+    width: 0.42rem;
+    height: 0.42rem;
+  }
+
+  .internal-overlay__actions {
+    gap: 0.55rem;
+  }
+
+  .internal-overlay__actions .burger-button,
+  .internal-overlay__close {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+
 .admin-shell {
   min-height: 100vh;
   display: grid;
@@ -5346,4 +5560,41 @@ button {
   color: #b91c1c;
   border-color: rgba(185, 28, 28, 0.16);
   background: rgba(254, 242, 242, 0.92);
+}
+
+@media (max-width: 900px) {
+  .landing-section__meta--catalog {
+    align-items: center;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .landing-section__meta--catalog .landing-section__meta-group {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .landing-section__meta--catalog .landing-section__cta {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .map-section__layout {
+    justify-items: center;
+  }
+
+  .map-section__card,
+  .map-section__embed {
+    width: min(100%, 34rem);
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .map-section__card,
+  .map-section__embed {
+    width: 100%;
+  }
 }
