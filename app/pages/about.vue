@@ -1,0 +1,30 @@
+<script setup lang="ts">
+import type { CmsPageData } from '../../shared/types/cms'
+import { siteNavItems } from '~/data/internal-pages'
+
+const { data: page } = await useFetch<CmsPageData>('/api/cms/pages/about', {
+  key: 'cms-page-about'
+})
+
+useSeoMeta({
+  title: () => `${page.value?.seoTitle ?? 'О компании'} | BRAND`,
+  description: () => page.value?.seoDescription ?? ''
+})
+</script>
+
+<template>
+  <main class="catalog-page catalog-page--light">
+    <InternalOverlayLayout :nav-items="siteNavItems" :left-image="page?.image">
+      <section v-if="page" class="catalog-shell catalog-shell--overlay">
+        <nav class="catalog-breadcrumbs" aria-label="Хлебные крошки">
+          <NuxtLink to="/">Главная</NuxtLink>
+          <span>/</span>
+          <span>{{ page.eyebrow }}</span>
+        </nav>
+
+        <InternalLandingPage :page="page" variant="article" />
+        <SiteFooter />
+      </section>
+    </InternalOverlayLayout>
+  </main>
+</template>
