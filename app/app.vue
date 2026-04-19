@@ -44,7 +44,7 @@ const overlayTransitionName = computed(() => {
         </div>
 
         <Transition :name="overlayTransitionName" appear>
-          <div :key="route.fullPath" class="app-overlay-scene__page">
+          <div class="app-overlay-scene__page">
             <NuxtLayout>
               <NuxtPage />
             </NuxtLayout>

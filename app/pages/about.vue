@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import type { CmsPageData } from '../../shared/types/cms'
+import { getFallbackPage } from '~/utils/cms-fallbacks'
 import { siteNavItems } from '~/data/internal-pages'
 
-const { data: page } = await useFetch<CmsPageData>('/api/cms/pages/about', {
-  key: 'cms-page-about'
+const { data: page } = useFetch<CmsPageData>('/api/cms/pages/about', {
+  key: 'cms-page-about',
+  default: () => getFallbackPage('about')
 })
 
 useSeoMeta({

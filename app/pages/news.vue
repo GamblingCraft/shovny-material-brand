@@ -1,18 +1,22 @@
 <script setup lang="ts">
 import type { CmsNewsPost, CmsPageData } from '../../shared/types/cms'
+import { getFallbackNewsPosts, getFallbackPage } from '~/utils/cms-fallbacks'
 import { siteNavItems } from '~/data/internal-pages'
 
 const currentPage = ref(1)
 const itemsPerPage = 5
 
-const [{ data: page }, { data }] = await Promise.all([
-  useFetch<CmsPageData>('/api/cms/pages/news', {
-    key: 'cms-page-news'
-  }),
-  useFetch<{ items: CmsNewsPost[] }>('/api/cms/news', {
-    key: 'cms-news-list'
+const { data: page } = useFetch<CmsPageData>('/api/cms/pages/news', {
+  key: 'cms-page-news',
+  default: () => getFallbackPage('news')
+})
+
+const { data } = useFetch<{ items: CmsNewsPost[] }>('/api/cms/news', {
+  key: 'cms-news-list',
+  default: () => ({
+    items: getFallbackNewsPosts()
   })
-])
+})
 
 const newsItems = computed(() => data.value?.items ?? [])
 const totalPages = computed(() => Math.max(1, Math.ceil(newsItems.value.length / itemsPerPage)))
